@@ -1,0 +1,34 @@
+<section class="page-hero">
+    <h1>Caça-palavras Ecológico</h1>
+    <p>Desafie seu raciocínio e conhecimento sobre natureza! Procure por termos ecológicos espalhados em todas as direções. Encontre as 7 palavras sorteadas e celebre cada descoberta.</p>
+</section>
+
+<div class="game-wrap word-game-wrap">
+    <section class="game-panel word-game-panel" data-word-search-app>
+        <div class="game-toolbar">
+            <div>
+                <span id="word-status" class="game-kicker">0 de 7 encontradas</span>
+                <h2>Caça-palavras</h2>
+            </div>
+
+            <div class="game-actions compact">
+                <button id="word-new" class="btn btn-light" type="button">Gerar de novo</button>
+                <button id="word-restart" class="btn btn-dark" type="button">Jogar novamente</button>
+            </div>
+        </div>
+
+        <div class="word-search-layout">
+            <div>
+                <div id="word-grid" class="word-grid" aria-label="Grade do caça-palavras"></div>
+                <div id="word-message" class="game-feedback" aria-live="polite"></div>
+            </div>
+
+            <aside class="word-list-panel">
+                <h3>Palavras</h3>
+                <ul id="word-list" class="word-list"></ul>
+            </aside>
+        </div>
+    </section>
+</div>
+
+<script src="/parque_ecologico/public/js/jogo.js"></script>

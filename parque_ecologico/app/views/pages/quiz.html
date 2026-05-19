@@ -1,0 +1,34 @@
+<section class="page-hero">
+    <h1>Quiz Ecológico</h1>
+    <p>Teste seus conhecimentos sobre a biodiversidade do Parque Ecológico! Responda 10 perguntas sorteadas sobre árvores, fauna, flora e sustentabilidade. Descubra quanto você sabe sobre a natureza ao seu redor.</p>
+</section>
+
+<div class="game-wrap">
+    <section class="game-panel quiz-panel" data-quiz-app>
+        <div class="game-toolbar">
+            <div>
+                <span id="quiz-step" class="game-kicker">Pergunta 1 de 10</span>
+                <h2 id="quiz-question">Carregando pergunta...</h2>
+            </div>
+
+            <div class="score-pill">
+                <span id="quiz-score">0</span>/10
+            </div>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+            <div id="quiz-progress" class="progress-fill"></div>
+        </div>
+
+        <div id="quiz-options" class="quiz-options"></div>
+
+        <div id="quiz-feedback" class="game-feedback" aria-live="polite"></div>
+
+        <div class="game-actions">
+            <button id="quiz-next" class="btn btn-dark" type="button">Próxima</button>
+            <button id="quiz-restart" class="btn btn-light" type="button">Jogar novamente</button>
+        </div>
+    </section>
+</div>
+
+<script src="/parque_ecologico/public/js/quiz.js"></script>

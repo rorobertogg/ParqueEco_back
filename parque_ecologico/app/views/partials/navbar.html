@@ -1,0 +1,125 @@
+<header class="site-header">
+
+    <a class="brand-logo brand-logo-prefeitura"
+       href="/parque_ecologico/"
+       aria-label="Prefeitura de Itaquaquecetuba">
+
+        <img src="/parque_ecologico/public/images/prefeittura.png"
+             alt="Prefeitura de Itaquaquecetuba">
+
+    </a>
+
+    <a class="brand-logo brand-logo-parque"
+       href="/parque_ecologico/"
+       aria-label="Parque Ecológico Mário do Canto">
+
+        <img src="/parque_ecologico/public/images/logo-mario.png"
+             alt="Parque Ecológico Mário do Canto">
+
+    </a>
+
+    <nav class="site-nav">
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="/parque_ecologico/sobre">
+                    Sobre Nós
+                </a>
+            </li>
+
+            <li>
+                <a href="/parque_ecologico/contato">
+                    Contato
+                </a>
+            </li>
+
+            <li>
+                <a href="/parque_ecologico/#planeje">
+                    Localização
+                </a>
+            </li>
+
+            <!-- botão dinâmico -->
+            <li id="auth-area"></li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+<script>
+
+async function logout(e) {
+
+    if (e) e.preventDefault();
+
+    await fetch(
+        "/parque_ecologico/api/auth/logout",
+        {
+            method: "POST",
+            credentials: "include"
+        }
+    );
+
+    location.href = "/parque_ecologico/login";
+}
+
+async function carregarNavbar() {
+
+    const authArea =
+        document.getElementById("auth-area");
+
+    try {
+
+        const res = await fetch(
+    "/parque_ecologico/api/auth/check",
+    {
+        credentials: "include"
+    }
+);
+
+console.log("CHECK:", res.status);
+
+
+        const user = await res.json();
+
+        let html = "";
+        const userTipo = String(user.tipo || '').toLowerCase().trim();
+
+        if (userTipo === "admin") {
+            html += `
+                <a href="/parque_ecologico/admin">
+                    Painel Admin
+                </a>
+            `;
+
+		html += `
+            <a href="#" id="logout-btn">
+                Sair
+            </a>
+        `;
+        }
+
+        
+
+        authArea.innerHTML = html;
+
+        document
+            .getElementById("logout-btn")
+            ?.addEventListener("click", logout);
+
+    } catch {
+
+        authArea.innerHTML = `
+            <a href="/parque_ecologico/login">
+                Login
+            </a>
+        `;
+    }
+}
+
+carregarNavbar();
+
+</script>

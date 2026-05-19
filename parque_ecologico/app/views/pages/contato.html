@@ -1,0 +1,170 @@
+<section class="page-hero">
+    <h1>Entre em Contato</h1>
+    <p>Fale com a administração para dúvidas sobre visitas, reservas e uso dos espaços do parque.</p>
+</section>
+
+<div class="content-wrap">
+    <div class="contato-container">
+        <div class="contato-info">
+            <h2>Informações</h2>
+
+            <div class="info-block">
+                <h3>Localização</h3>
+                <p>
+                    Rua Cabrália Paulista, 100 - Estação<br>
+                    Itaquaquecetuba - SP, 08571-020
+                </p>
+            </div>
+
+            <div class="info-block">
+                <h3>Telefone</h3>
+                <p>
+                    <a href="tel:+551100000000">(11) 0000-0000</a><br>
+                    Atendimento administrativo em horário comercial.
+                </p>
+            </div>
+
+            <div class="info-block">
+                <h3>E-mail</h3>
+                <p>
+                    <a href="mailto:contato@parque.com.br">contato@parque.com.br</a><br>
+                    <a href="mailto:agendamentos@parque.com.br">agendamentos@parque.com.br</a>
+                </p>
+            </div>
+
+            <div class="info-block">
+                <h3>Funcionamento</h3>
+                <p>Todos os dias, das 7h às 17h.</p>
+            </div>
+        </div>
+
+        <div class="contato-form">
+            <h2>Mensagem</h2>
+
+            <form id="contato-form">
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" name="telefone" inputmode="numeric" maxlength="11" placeholder="Apenas dígitos (10 ou 11 números)">
+                </div>
+
+                <div class="form-group">
+                    <label for="assunto">Assunto *</label>
+                    <select id="assunto" name="assunto" required>
+                        <option value="">-- Selecione --</option>
+                        <option value="duvidas_visitas">Dúvidas sobre visitas</option>
+                        <option value="reservas">Reservas</option>
+                        <option value="uso_espacos">Uso dos espaços</option>
+                        <option value="parcerias">Parcerias</option>
+                        <option value="reclamacao">Reclamação</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                    <input type="text" id="assunto_outro" name="assunto_outro" placeholder="Descreva o assunto" style="display:none; margin-top:8px;" />
+                </div>
+
+                <div class="form-group">
+                    <label for="mensagem">Mensagem *</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="btn">Enviar Mensagem</button>
+            </form>
+
+            <div id="form-message" class="form-message" style="display:none;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById("contato-form")?.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const msgEl = document.getElementById('form-message');
+    msgEl.style.display = 'none';
+
+    // construir assunto: se selecionou 'outro', usar campo livre
+    const assuntoSel = document.getElementById('assunto');
+    let assuntoVal = '';
+    if (assuntoSel) {
+        if (assuntoSel.value === 'outro') {
+            assuntoVal = document.getElementById('assunto_outro')?.value.trim() || '';
+        } else {
+            assuntoVal = assuntoSel.options[assuntoSel.selectedIndex]?.text || assuntoSel.value;
+        }
+    }
+
+    const telefoneRaw = (document.getElementById('telefone').value || '').replace(/[^0-9]/g, '');
+
+    if (telefoneRaw !== '' && telefoneRaw.length !== 10 && telefoneRaw.length !== 11) {
+        msgEl.textContent = 'Telefone inválido: use 10 ou 11 dígitos.';
+        msgEl.className = 'form-message erro';
+        msgEl.style.display = 'block';
+        return;
+    }
+
+    const data = {
+        nome: document.getElementById('nome').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        telefone: telefoneRaw,
+        assunto: assuntoVal,
+        mensagem: document.getElementById('mensagem').value.trim()
+    };
+
+    try {
+        const res = await fetch('/parque_ecologico/api/contato/enviar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const json = await res.json();
+
+        if (!res.ok) throw new Error(json.erro || 'Erro ao enviar mensagem');
+
+        msgEl.textContent = json.mensagem || 'Mensagem enviada com sucesso';
+        msgEl.className = 'form-message sucesso';
+        msgEl.style.display = 'block';
+        this.reset();
+
+    } catch (err) {
+        msgEl.textContent = err.message || 'Erro ao enviar mensagem';
+        msgEl.className = 'form-message erro';
+        msgEl.style.display = 'block';
+    }
+});
+
+// comportamento extra: formatar telefone e controlar combobox 'outro'
+document.addEventListener('DOMContentLoaded', function(){
+    const telefoneInput = document.getElementById('telefone');
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(){
+            let value = this.value.replace(/[^0-9]/g, '');
+            if (value.length > 11) value = value.substring(0,11);
+            this.value = value;
+        });
+    }
+
+    const assuntoEl = document.getElementById('assunto');
+    const assuntoOutro = document.getElementById('assunto_outro');
+    if (assuntoEl && assuntoOutro) {
+        assuntoEl.addEventListener('change', function(){
+            if (this.value === 'outro') {
+                assuntoOutro.style.display = 'block';
+                assuntoOutro.required = true;
+            } else {
+                assuntoOutro.style.display = 'none';
+                assuntoOutro.required = false;
+            }
+        });
+    }
+});
+</script>

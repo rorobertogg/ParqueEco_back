@@ -1,0 +1,147 @@
+<section class="page-hero">
+    <h1>Agendar Visita Técnica</h1>
+    <p>
+        Preencha os dados da instituição e da visita para solicitar o acompanhamento
+        técnico com um guia do parque.
+    </p>
+</section>
+
+<div class="content-wrap">
+    <form id="visita-form" class="form-agendamento">
+
+        <fieldset>
+            <legend>Informações da Instituição</legend>
+
+            <div class="form-group">
+                <label>Nome da Instituição *</label>
+                <input type="text" name="nome_instituicao" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nome do Diretor *</label>
+                <input type="text" name="nome_diretor" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nome do Responsável *</label>
+                <input type="text" name="nome_responsavel" required>
+            </div>
+
+            <div class="form-group">
+                <label>Telefone *</label>
+                <input type="tel" name="telefone" inputmode="numeric" pattern="[0-9]{10,11}" placeholder="(XX) XXXXX-XXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-mail *</label>
+                <input type="email" name="email" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados da Visita</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Data *</label>
+                    <input type="date" name="data_visita" id="data_visita" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantidade de Visitantes *</label>
+                    <input type="number"
+       				id="qtd_visitantes"
+       				name="qtd_visitantes"
+       				min="1"
+       				max="4"
+       				required>
+
+				<small>Máximo de 4 visitantes por visita técnica.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Faixa Etária *</label>
+                <select name="faixa_etaria" required>
+                    <option value="">-- Selecione --</option>
+                    <option value="infantil">Infantil (até 10 anos)</option>
+                    <option value="adolescente">Adolescente (11 a 17 anos)</option>
+                    <option value="adulto">Adulto (18+ anos)</option>
+                    <option value="misto">Misto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Guia Técnico *</label>
+                <select name="guia_id" required>
+                    <option value="">-- Selecione --</option>
+
+                    <?php foreach($guias as $g): ?>
+                        <option value="<?= $g['id'] ?>">
+                            <?= htmlspecialchars($g['nome']) ?>
+                            - <?= htmlspecialchars($g['especialidade']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="objetivo">Objetivo da Visita *</label>
+                <select name="objetivo" id="objetivo" required>
+                    <option value="">-- Selecione --</option>
+                    <option value="educacao_ambiental">Educação Ambiental</option>
+                    <option value="pesquisa">Pesquisa</option>
+                    <option value="treinamento">Treinamento</option>
+                    <option value="planejamento">Planejamento de projeto</option>
+                    <option value="outros">Outros</option>
+                </select>
+
+                <p class="form-note">
+                    Visitas técnicas são realizadas em dias úteis,
+                    entre 9h e 13h.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações (opcional)</label>
+                <textarea name="observacoes" id="observacoes" rows="3" placeholder="Anote informações adicionais, necessidades especiais ou comentários"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Horário</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Horário de Entrada *</label>
+                    <input type="time" name="horario_entrada"
+                           min="09:00" max="13:00" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Horário de Saída *</label>
+                    <input type="time" name="horario_saida"
+                           min="09:00" max="13:00" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-group termos-group">
+            <label>
+                <input
+                    type="checkbox"
+                    name="aceite_termos"
+                    required
+                >
+                Declaro que li e aceito os <a href="/parque_ecologico/public/terms.html" target="_blank">Termos de Uso e Responsabilidade</a> *
+        <button type="submit" class="btn">
+            Solicitar Visita Técnica
+        </button>
+
+    </form>
+
+    <div id="form-message" class="form-message" style="display:none;"></div>
+    <p id="resultado"></p>
+</div>
+
+<script src="/parque_ecologico/public/js/visita.js"></script>

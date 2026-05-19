@@ -1,0 +1,1 @@
+// Registration client removed. Users must be created directly in the database.

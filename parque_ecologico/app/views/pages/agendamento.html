@@ -1,0 +1,96 @@
+<section class="page-hero">
+    <h1>Reserve um Quiosque</h1>
+    <p>Preencha os dados da instituição e da visita para solicitar a reserva. A administração analisará a disponibilidade e retornará pelo e-mail informado.</p>
+</section>
+
+<div class="content-wrap">
+    <form id="agendamento-form" class="form-agendamento">
+        <fieldset>
+            <legend>Informações do visitante</legend>
+
+            <div class="form-group">
+                <label for="nome_responsavel">Nome do Responsável *</label>
+                <input type="text" id="nome_responsavel" name="nome_responsavel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="telefone">Telefone *</label>
+                <input type="tel" id="telefone" name="telefone" inputmode="numeric" pattern="[0-9]{10,11}" placeholder="(XX) XXXXX-XXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados da Visita</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="data_reserva">Data da Reserva *</label>
+                    <input type="date" id="data_reserva" name="data_reserva" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="qtd_visitantes">Quantidade de Visitantes *</label>
+                    <input type="number"
+      					id="qtd_visitantes"
+       					name="qtd_visitantes"
+       					min="1"
+        			max="8"
+       					required>
+				<small>Máximo de 8 visitantes por quiosque.</small>
+                </div>
+            </div>
+            
+			
+			<div class="form-group">
+  				  <label for="quiosque_id">Quiosque *</label>
+   					 <select id="quiosque_id" name="quiosque_id" required>
+       					 <option value="">-- Selecione --</option>
+
+       				 <?php for ($i = 1; $i <= 20; $i++): ?>
+        			    <option value="<?= $i ?>">
+           			     Quiosque <?= $i ?>
+           				 </option>
+      				  <?php endfor; ?>
+  				  </select>
+			</div>
+
+
+            <p class="form-note">Reservas são validadas para dias úteis e horários entre 8h e 16h.</p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Horário</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="horario_entrada">Horário de Entrada *</label>
+                    <input type="time" id="horario_entrada" name="horario_entrada" min="08:00" max="16:00" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="horario_saida">Horário de Saída *</label>
+                    <input type="time" id="horario_saida" name="horario_saida" min="08:00" max="16:00" required>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="form-group termos-group">
+    		<label>
+		<input type="checkbox" id="aceite_termos" name="aceite_termos" required>
+		Declaro que li e aceito os <a href="/parque_ecologico/public/terms.html" target="_blank">Termos de Uso e Responsabilidade</a> *
+    		</label>
+</div>
+
+        <button type="submit" class="btn">Enviar Agendamento</button>
+    </form>
+
+    <div id="form-message" class="form-message" style="display:none;"></div>
+    <p id="resultado"></p>
+</div>
+
+<script src="/parque_ecologico/public/js/agendamento.js"></script>
